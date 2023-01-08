@@ -1,12 +1,8 @@
 ---
 layout: default
 ---
-<p><audio id="loop-limited" controls="controls" autoplay="autoplay"><source src="assets/bak.mp3" type="audio/mp3" /></audio><br />
-  <script>
-  var loopLimit = 5;
-  var loopCounter = 0;
-  document.getElementById('loop-limited').addEventListener('ended', function(){if (loopCounter < loopLimit){this.currentTime = 0;this.play();loopCounter++;}
-  }, false);</script></p>
+<p><audio id="loop-limited" controls="controls" style="visibility: hidden;"><source src="assets/bak.mp3" type="audio/mp3" /></audio><br />
+  </p>
 <ul>
     {% for post in paginator.posts %}
       <li>
