@@ -1,9 +1,9 @@
-title: Hacker-Blog
+title: PI3.1416-Blog
 description: "My Blog"
 author:
   name: "73.1416"
-  email: "pi@gmail.com"
-  url: "PI3.1416.github.io"
+  email: "piyushparashar2k@gmail.com"
+  url: "piyushs3v3n.github.io"
 
 baseurl: /
 
@@ -28,5 +28,5 @@ plugins_dir:
   - jekyll-sitemap
 
 # Custom variables
-owner : "SomeHacker"
-year : "2020"
+owner : "PI3.1416"
+year : "2023"
