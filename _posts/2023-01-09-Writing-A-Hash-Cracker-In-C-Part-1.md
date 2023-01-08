@@ -91,7 +91,7 @@ And that is how you get a SHA256 well now would be the best time i would go to m
 <u><b>Note 1:</b></u> All variables are 32 bit unsigned integers and addition is calculated modulo 232
 <u><b>Note 2:</b></u> For each round, there is one round constant k[i] and one entry in the message schedule array w[i], 0 ≤ i ≤ 63
 <u><b>Note 3:</b></u> The compression function uses 8 working variables, a through h
-<u><b>Note 4:</u></b> Big-endian convention is used when expressing the constants in this pseudocode, and when parsing message block data from bytes to words,for example, the first word of the input message "abc" after padding is 0x61626380 </pre>
+<u><b>Note 4:</b></u> Big-endian convention is used when expressing the constants in this pseudocode, and when parsing message block data from bytes to words,for example, the first word of the input message "abc" after padding is 0x61626380 </pre>
 
 Initialize hash values:
     (first 32 bits of the fractional parts of the square roots of the first 8 primes 2..19):
