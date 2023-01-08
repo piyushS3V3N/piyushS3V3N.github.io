@@ -176,3 +176,4 @@ Add the compressed chunk to the current hash value:
 Produce the final hash value (big-endian):
     digest := hash := h0 append h1 append h2 append h3 append h4 append h5 append h6 append h7   
 </pre>
+
