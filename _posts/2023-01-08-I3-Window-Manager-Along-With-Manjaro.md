@@ -2,7 +2,6 @@
 title : "I3 Window Manager Along With Manjaro"
 published: true
 ---
-# [](#header-1)I3 Window Manager Along With Manjaro
 
 So Today I would be sharing my personal experience with i3 window manager in manjaro linux
 
