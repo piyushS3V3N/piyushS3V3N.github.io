@@ -14,7 +14,9 @@ $blockquote-border: $dove-grey !default;
 body {
   margin: 0;
   padding: 0;
-  background: $body-background url("../assets/bkg.png") 0 0;
+  width: 300px;
+  height: 300px;
+  background: $body-background url("../assets/bkg.png");
   background-position: center center;
   background-repeat: no-repeat;
   color: $body-foreground;
