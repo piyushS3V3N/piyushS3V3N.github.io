@@ -3,4 +3,6 @@ layout: page
 title: About
 ---
 
-I am A 73.1416
+I am  3.1416
+
+MCA - C/C++, JAVA, Python
