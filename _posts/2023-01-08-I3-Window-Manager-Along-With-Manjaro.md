@@ -26,3 +26,9 @@ So overall my impression is that it is fun to use this tiling window manager and
 Honestly, I spend hours on forums to get mine setup and all but once it was done it was worth the time indeed.
 ### ScreenShot
 ![](https://raw.githubusercontent.com/piyushS3V3N/piyushS3V3N.github.io/main/assets/2020-05-13-163910_1360x768_scrot.png)
+
+Mine current setup is :
+
+* OS: Manjaro
+* Terminal : Termite , URXVT(unicode-rxvt)
+* Window Manager : i3-gaps
