@@ -15,6 +15,8 @@ body {
   margin: 0;
   padding: 0;
   background: $body-background url("../assets/bkg.png") 0 0;
+  background-position: center center;
+  background-repeat: no-repeat;
   color: $body-foreground;
   font-size: 16px;
   line-height: 1.5;
