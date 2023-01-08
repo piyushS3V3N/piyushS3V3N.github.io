@@ -14,10 +14,8 @@ $blockquote-border: $dove-grey !default;
 body {
   margin: 0;
   padding: 0;
-  width: 300px;
-  height: 300px;
-  background: $body-background url("../assets/bkg.png") 0 0;
-  
+  opacity: 0.5;
+  background: $body-background url("../assets/bkg") 0 0;
   color: $body-foreground;
   font-size: 16px;
   line-height: 1.5;
