@@ -14,7 +14,7 @@ $blockquote-border: $dove-grey !default;
 body {
   margin: 0;
   padding: 0;
-  background: $body-background url("../assets/bkg") 0 0;
+  background: $body-background url("../assets/bkg.jpg") 0 0;
   color: $body-foreground;
   font-size: 16px;
   line-height: 1.5;
@@ -24,6 +24,7 @@ body {
 /* General & 'Reset' Stuff */
 
 .container {
+  opacity: 0.7;
   width: 90%;
   max-width: 1000px;
   margin: 0 auto;
