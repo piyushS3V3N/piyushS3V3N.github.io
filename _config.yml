@@ -22,6 +22,7 @@ defaults:
       layout: "post"
 
 future: true
+
 plugins_dir:
   - jekyll-seo-tag
   - jekyll-paginate

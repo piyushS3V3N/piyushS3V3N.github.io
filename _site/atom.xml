@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PI3.1416-Blog</title>
+    <description>My Blog</description>
+    <link>http://localhost:4000</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    <author>
+      <name>73.1416</name>
+      <email>piyushparashar2k@gmail.com</email>
+      <uri>piyushs3v3n.github.io</uri>
+    </author>
+    
+      <item>
+        <title>Writing A Hash Cracker In C – Part 1 (^^)</title>
+        <description>&lt;p&gt;&lt;img src=&quot;https://b14nkmind.files.wordpress.com/2022/04/image-1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;-what-is-a-hash-cracker-&quot;&gt;&lt;a href=&quot;#header1&quot;&gt;&lt;/a&gt; What is a Hash Cracker ?&lt;/h1&gt;
+&lt;p&gt;A hash cracker is a software specifically designed to crack (i.e. Decode ) a hash that is not supposed to be decoded without a key. It enumerates through thousand of hashes to find the password from the hash values (i.e. SHA256, MD5 etc.)&lt;/p&gt;
+
+&lt;h1 id=&quot;-how-it-works-&quot;&gt;&lt;a href=&quot;#header2&quot;&gt;&lt;/a&gt; How it works ?&lt;/h1&gt;
+&lt;p&gt;Hash Cracker Guesses password hashes them then compares the resulting hash to the one it is trying to crack. If the hash matches to the one it’s trying to crack then we know the password if not keep guessing.&lt;/p&gt;
+
+&lt;p&gt;But in out case we would be using more of dictionary brute force attack rather than a combination attack.
+how we are going to this is by using a rockyou.txt (one of the largest password list ). Hashing the password using the algorithm and then comparing them to the hash we are trying to crack.&lt;/p&gt;
+
+&lt;h1 id=&quot;-lets-get-started-&quot;&gt;&lt;a href=&quot;#header3&quot;&gt;&lt;/a&gt; Let’s get started !&lt;/h1&gt;
+&lt;p&gt;For the sake of testing i am only coding the hash cracker for two hashes commonly used i.e. the SHA256 and MD5.&lt;/p&gt;
+
+&lt;p&gt;After extensive research on various platforms i came to a conclusion it was futile so i went to github to see some of the good implementation there is to offer from crypto community.&lt;/p&gt;
+
+&lt;h1 id=&quot;-sha256&quot;&gt;&lt;a href=&quot;#header4&quot;&gt;&lt;/a&gt; SHA256&lt;/h1&gt;
+&lt;p&gt;SHA256 is a hashing function that outputs a value that is 256 bits long. It generates almost unique 256-bit(32 byte ) signature of a text.  In encryption, data is transformed into a secure format that is unreadable unless the recipient has a key. In its encrypted form, the data may be of unlimited size, often just as long as when unencrypted. In hashing, by contrast, data of arbitrary size is mapped to data of fixed size. For example, a 512-bit string of data would be transformed into a 256-bit string through SHA-256 hashing.&lt;/p&gt;
+
+&lt;p&gt;In cryptographic hashing, the hashed data is modified in a way that make it completely unreadable. It would be virtually impossible to convert the 256-bit hash mentioned above back to its original 512-bit form. Wait a min what ? If it can’t be recovered why would some one want to use such useless technique to destroy data. The most common reason is to verify the integrity of the content of data that must be kept secret. For example, hashing is used to verify the integrity of secure messages and files. The hash code of a secure file can be posted publicly so uses can download the file can confirm they have an authentic version without the contents of the file being revealed. Hashes are similarly used to verify digital signatures.&lt;/p&gt;
+
+&lt;p&gt;Password verification is a particularly important application for cryptographic hashing. Storing users passwords in a plain text document is a recipe for disaster and can lead to another rockyou.txt database XD. So, what is more secure than a hash that can’t be decrypted to store password ?&lt;/p&gt;
+
+&lt;p&gt;I get it how would user be able to login if password is scrambled into something that is not recoverable ? Well answer is quite simple when user enter a password the password is encrypted into a hash and then the hash is compared to the user in question once the hashes are compared they will match and login and since the hashing function gives unique hashes they would only match to the one plaintext that is from which it is made from.&lt;/p&gt;
+
+&lt;p&gt;There are some step involved when we talk about a hashing using SHA256.&lt;/p&gt;
+
+&lt;p&gt;So First is a Preprocessing stage&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Convert the plain text to binary.&lt;/li&gt;
+  &lt;li&gt;Append a single 1&lt;/li&gt;
+  &lt;li&gt;Now we pad data with 0’s until data is multiple of 512.&lt;/li&gt;
+  &lt;li&gt;Append 64 bits to end where the 64 bits are big-endian integer representing the length of the original input in binary.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;now-initialize-hash-value-h&quot;&gt;Now Initialize Hash Value (h)&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Now we create a 8 hash value. These are hard-coded constants that represents the first 32 bits of the fractional parts of the square roots of the first 8 primes: 2,3,5,7,11,13,17,19
+Initialize Round Constants (k)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Similar to step 2, we are creating some constants This time, there are 64 of them. Each value (0-63) is the first 32 bits of the fractional parts of the cube roots of the first 64 primes (2 – 311).&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;chunk-loop&quot;&gt;Chunk Loop&lt;/h3&gt;
+
+&lt;p&gt;The following steps will happen for each 512-bit “chunk” of data from our input. At each iteration of the loop, we will be mutating the hash values h0-h7, which will be the final output.&lt;/p&gt;
+
+&lt;p&gt;Create Message Schedule (w)&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Copy the input data from step 1 into a new array where each entry is a 32-bit word&lt;/li&gt;
+  &lt;li&gt;Add 48 more words initialized to zero, such that we have an array w[0..63]&lt;/li&gt;
+  &lt;li&gt;Modify the zero-ed indexes at the end of the array using the following algorithm:&lt;/li&gt;
+  &lt;li&gt;For i in w[16..63]:
+    &lt;ul&gt;
+      &lt;li&gt;s0 = (w[i-15] rightrotate 7) xor (w[i-15] rightrotate 18) xor (w[i-15] rightshift 3)&lt;/li&gt;
+      &lt;li&gt;s1 = (w[i- 2] rightrotate 17) xor (w[i- 2] rightrotate 19) xor (w[i- 2] rightshift 10)&lt;/li&gt;
+      &lt;li&gt;w[i] = w[i-16] + s0 + w[i-7] + s1&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This leaves us with 64 words in our message schedule.&lt;/p&gt;
+
+&lt;h3 id=&quot;compression&quot;&gt;Compression&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;S1 = (e rightrotate 6) xor (e rightrotate 11) xor (e rightrotate 25)&lt;/li&gt;
+  &lt;li&gt;ch = (e and f) xor ((not e) and g)&lt;/li&gt;
+  &lt;li&gt;temp1 = h + S1 + ch + k[i] + w[i]&lt;/li&gt;
+  &lt;li&gt;S0 = (a rightrotate 2) xor (a rightrotate 13) xor (a rightrotate 22)&lt;/li&gt;
+  &lt;li&gt;maj = (a and b) xor (a and c) xor (b and c)&lt;/li&gt;
+  &lt;li&gt;temp2 := S0 + maj&lt;/li&gt;
+  &lt;li&gt;h = g&lt;/li&gt;
+  &lt;li&gt;g = f&lt;/li&gt;
+  &lt;li&gt;f = e&lt;/li&gt;
+  &lt;li&gt;e = d + temp1&lt;/li&gt;
+  &lt;li&gt;d = c&lt;/li&gt;
+  &lt;li&gt;c = b&lt;/li&gt;
+  &lt;li&gt;b = a&lt;/li&gt;
+  &lt;li&gt;a = temp1 + temp2
+That entire calculation is done 63 more times, modifying the variables a-h throughout.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Modify Final Values&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;After the compression loop, but still, within the chunk loop, we modify the hash values by adding their respective variables to them, a-h. As usual, all addition is modulo 2^32.
+    &lt;h3 id=&quot;concatenate-final-hash&quot;&gt;Concatenate Final Hash&lt;/h3&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Last but not least, slap them all together, a simple string concatenation will do.
+And that is how you get a SHA256 well now would be the best time i would go to my closet to cry for a while and think over my career in computer science T_T.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Now if you want a pseudocode Wikipedia has one&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;
+&lt;pre&gt;
+&lt;u&gt;&lt;b&gt;Note 1:&lt;/b&gt;&lt;/u&gt; All variables are 32 bit unsigned integers and addition is calculated modulo 232
+&lt;u&gt;&lt;b&gt;Note 2:&lt;/b&gt;&lt;/u&gt; For each round, there is one round constant k[i] and one entry in the message schedule array w[i], 0 ≤ i ≤ 63
+&lt;u&gt;&lt;b&gt;Note 3:&lt;/b&gt;&lt;/u&gt; The compression function uses 8 working variables, a through h
+&lt;u&gt;&lt;b&gt;Note 4:&lt;/b&gt;&lt;/u&gt; Big-endian convention is used when expressing the constants in this pseudocode, and when parsing message block data from bytes to words,for example, the first word of the input message &quot;abc&quot; after padding is 0x61626380 &lt;/pre&gt;
+
+Initialize hash values:
+    (first 32 bits of the fractional parts of the square roots of the first 8 primes 2..19):
+    h0 := 0x6a09e667
+    h1 := 0xbb67ae85
+    h2 := 0x3c6ef372
+    h3 := 0xa54ff53a
+    h4 := 0x510e527f
+    h5 := 0x9b05688c
+    h6 := 0x1f83d9ab
+    h7 := 0x5be0cd19
+    Initialize array of round constants:
+    (first 32 bits of the fractional parts of the cube roots of the first 64 primes 2..311):
+    k[0..63] :=
+    0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+    0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+    0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+    0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+    0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+    0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+    0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+    0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
+
+Pre-processing (Padding):
+    begin with the original message of length L bits
+    append a single &apos;1&apos; bit
+    append K &apos;0&apos; bits, where K is the minimum number &amp;gt;= 0 such that (L + 1 + K + 64) is a multiple of 512
+    append L as a 64-bit big-endian integer, making the total post-processed length a multiple of 512 bits
+    such that the bits in the message are: &lt;original message=&quot;&quot; of=&quot;&quot; length=&quot;&quot; L=&quot;&quot;&gt; 1 &lt;K zeros=&quot;&quot;&gt; &amp;lt;L as 64 bit integer&amp;gt; , (the number of bits will be a multiple of 512)
+
+Process the message in successive 512-bit chunks:
+    break message into 512-bit chunks
+    for each chunk
+        create a 64-entry message schedule array w[0..63] of 32-bit words
+        (The initial values in w[0..63] don&apos;t matter, so many implementations zero them here)
+        copy chunk into first 16 words w[0..15] of the message schedule array
+
+Extend the first 16 words into the remaining 48 words w[16..63] of the message schedule array:
+        for i from 16 to 63
+            s0 := (w[i-15] rightrotate  7) xor (w[i-15] rightrotate 18) xor (w[i-15] rightshift  3)
+            s1 := (w[i-2] rightrotate 17) xor (w[i-2] rightrotate 19) xor (w[i-2] rightshift 10)
+            w[i] := w[i-16] + s0 + w[i-7] + s1
+
+Initialize working variables to current hash value:
+        a := h0
+        b := h1
+        c := h2
+        d := h3
+        e := h4
+        f := h5
+        g := h6
+        h := h7
+
+Compression function main loop:
+        for i from 0 to 63
+            S1 := (e rightrotate 6) xor (e rightrotate 11) xor (e rightrotate 25)
+            ch := (e and f) xor ((not e) and g)
+            temp1 := h + S1 + ch + k[i] + w[i]
+            S0 := (a rightrotate 2) xor (a rightrotate 13) xor (a rightrotate 22)
+            maj := (a and b) xor (a and c) xor (b and c)
+            temp2 := S0 + maj
+
+h := g
+    g := f
+    f := e
+    e := d + temp1
+    d := c
+    c := b
+    b := a
+    a := temp1 + temp2
+
+Add the compressed chunk to the current hash value:
+    h0 := h0 + a
+    h1 := h1 + b
+    h2 := h2 + c
+        h3 := h3 + d
+        h4 := h4 + e
+        h5 := h5 + f
+        h6 := h6 + g
+        h7 := h7 + h
+
+Produce the final hash value (big-endian):
+    digest := hash := h0 append h1 append h2 append h3 append h4 append h5 append h6 append h7   
+&amp;lt;/pre&amp;gt;
+
+&lt;/K&gt;&lt;/original&gt;&lt;/pre&gt;
+</description>
+        <pubDate>Mon, 09 Jan 2023 00:00:00 +0530</pubDate>
+        <link>http://localhost:4000//Writing-A-Hash-Cracker-In-C-Part-1</link>
+        <link href="http://localhost:4000/Writing-A-Hash-Cracker-In-C-Part-1"/>
+        <guid isPermaLink="true">http://localhost:4000/Writing-A-Hash-Cracker-In-C-Part-1</guid>
+      </item>
+    
+      <item>
+        <title>I3 Window Manager Along With Manjaro</title>
+        <description>&lt;p&gt;So Today I would be sharing my personal experience with i3 window manager in manjaro linux&lt;/p&gt;
+
+&lt;p&gt;I know most of us believe Manjaro is a base line arch linux for noobs but on a bright side it has a lot of features which most of us ignore right away like live kernel change or better compatibility with Nvidia and other non-free hardware.&lt;/p&gt;
+
+&lt;p&gt;What were the Pr0s:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;First of all the Simplicity it provided. I mean literally what a easy to use setup it is so basically i3wm works on keybindings so there is no menu buttons or extra stuff you want you have to use assigned keys.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It increased the productivity by reducing my time searching through windows it tiles them around so if want a window in floating i will decide rather than cluttering through floating windows.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It was fun to customise and honestly i learned a lot while customising it that wouldn’t have been possible in preinstalled gui enviornments.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;What were the c0ns:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Well First it is not something recommended for total newbies (n00bs) as you would be spending most of the time editing rc and config files.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It is somewhat buggy i use i3-gaps fork to get gaps between the window which is not provided by default installation and you might need to install extra items and assign them in your config files.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;In some cases due to unsupported locales you might not be able to run certain packages which can be fixed by changing locale to supported ones but still i would rather wanna use it in my own locale than some other.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So overall my impression is that it is fun to use this tiling window manager and i would love to see it improve more over the time.&lt;/p&gt;
+
+&lt;p&gt;Honestly, I spend hours on forums to get mine setup and all but once it was done it was worth the time indeed.&lt;/p&gt;
+&lt;h3 id=&quot;screenshot&quot;&gt;ScreenShot&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/piyushS3V3N/piyushS3V3N.github.io/main/assets/2020-05-13-163910_1360x768_scrot.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Mine current setup is :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;OS: Manjaro&lt;/li&gt;
+  &lt;li&gt;Terminal : Termite , URXVT(unicode-rxvt)&lt;/li&gt;
+  &lt;li&gt;Window Manager : i3-gaps&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 08 Jan 2023 00:00:00 +0530</pubDate>
+        <link>http://localhost:4000//I3-Window-Manager-Along-With-Manjaro</link>
+        <link href="http://localhost:4000/I3-Window-Manager-Along-With-Manjaro"/>
+        <guid isPermaLink="true">http://localhost:4000/I3-Window-Manager-Along-With-Manjaro</guid>
+      </item>
+    
+  </channel>
+</rss>
