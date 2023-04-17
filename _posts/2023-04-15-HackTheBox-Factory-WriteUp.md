@@ -29,7 +29,9 @@ To understand the Water Storage Facility PLC we need to understand how it is wor
 ![](https://raw.githubusercontent.com/piyushS3V3N/piyushS3V3N.github.io/main/assets/factory/PLC_Ladder.png)
 
 Now over here there are 4 logic we need to look in inorder to get our flag these circuit explains how we can set out coil.
+
 ![](https://raw.githubusercontent.com/piyushS3V3N/piyushS3V3N.github.io/main/assets/factory/PLC_Ladder1.png)
+
 In This Auto mode can be triggered when start is true or auto_mode is true and manual_mode_control is false.
 It gives us idea in order to shut of auto mode we somehow need to set manual_mode_control to true which in return set our manual mode on because in bottom it shows how normally closed contact of auto mode sets manual mode on.
 
@@ -42,12 +44,15 @@ second is this one where it explains how to enable stop in stop out which would 
 ![](https://raw.githubusercontent.com/piyushS3V3N/piyushS3V3N.github.io/main/assets/factory/PLC_Ladder5.png)
 
 Looking at above ladder now we can understand how we can enable in_valve and out valve so lets get to working 
+
 ![](https://raw.githubusercontent.com/piyushS3V3N/piyushS3V3N.github.io/main/assets/factory/Factory-img3.png)
+
 So in this we can see how a modbus command is structured so 52 is the address of Slave the Targetand 05 is the write single coil and 00 05 is the physical address to the coil
 FF 00 sets the output value On (1).
 For this we don't have to calculate CRC as CRC is handled by hosting machine laptop2.
 
 ![](https://raw.githubusercontent.com/piyushS3V3N/piyushS3V3N.github.io/main/assets/factory/modexec1.png)
+
 Running the command 1 to get status we can see how our automode is set to manual mode.
 
 ![](https://raw.githubusercontent.com/piyushS3V3N/piyushS3V3N.github.io/main/assets/factory/won.png)
