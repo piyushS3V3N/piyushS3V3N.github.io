@@ -6,7 +6,7 @@ published: true
 # Little in brief
 
 ```
-Sorry guys i wasn't much active on the blog for a while due to some personal and more or less career related issues but now with new found clarity i would try to keep up and updated blog as much possible
+Sorry guys i wasn't much active on the blog for a while due to some personal and more or less career related issues but now with new found clarity i would try to keep up and update blog as much as possible.
 ```
 
 # Back on track
@@ -17,7 +17,7 @@ This backdoor is very indirect and only shows up when a set of known specific cr
 
 So are you affected answer is it depends, so in general what need to be true for your system to be vulnerable is as follows:
 
-- System should be using glibs (for IFUNC).
+- System should be using glibc (for IFUNC).
 - Version for xz or liblzma should be 5.6.0 or 5.6.1. Most likely to be found in rolling release.
 - For people using .deb or .rpm with glibc and above mentioned xz version with systemd on publicly accessible ssh need to update as quickly as possible 
 
