@@ -10,3 +10,13 @@ layout: default
   {{ content }}
 </article>
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    gsap.fromTo(
+      ".sci-fi-article",
+      { opacity: 0, x: -50 },
+      { opacity: 1, x: 0, duration: 1.2, ease: "power3.out" },
+    );
+  });
+</script>
+

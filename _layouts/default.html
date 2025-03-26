@@ -1,25 +1,25 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    {% include head.html %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        gsap.fromTo(
-          "body",
-          { opacity: 0, scale: 0.9 },
-          { opacity: 1, scale: 1, duration: 1.2, ease: "power4.out" },
-        );
+<html>
+  {% include head.html %}
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      gsap.fromTo(
+        ".sci-fi-container",
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, duration: 1.5, ease: "power4.out" },
+      );
+
+      setTimeout(() => {
+        document.getElementById("loading-screen").style.opacity = "0";
         setTimeout(() => {
-          document.getElementById("loading-screen").style.opacity = "0";
-          setTimeout(() => {
-            document.getElementById("loading-screen").style.display = "none";
-          }, 1000);
-        }, 1500);
-      });
-    </script>
-  </head>
+          document.getElementById("loading-screen").style.display = "none";
+        }, 1000);
+      }, 1500);
+    });
+  </script>
+
   <body>
     <div id="loading-screen">
       <span>Initializing...</span>
@@ -27,48 +27,40 @@
 
     <div class="sci-fi-container">
       <div class="sci-fi-window">
-        <div id="wrapper">
-          {% include header.html %}
-          <div class="container">
-            <section id="main_content">{{ content }}</section>
-          </div>
+        {% include header.html %}
+        <div class="container">
+          <section id="main_content">{{ content }}</section>
         </div>
       </div>
     </div>
 
     {% if paginator.total_pages > 1 %}
     <div class="pagination">
-      {% if paginator.previous_page == 1 %}
+      {% if paginator.previous_page %}
       <a
-        href="{{ '/' | prepend: site.baseurl | replace: '//' , '/' }}"
-        class="page-item"
-        >&laquo;</a
-      >
-      {% elsif paginator.previous_page %}
-      <a
-        href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//' , '/' }}"
+        href="{{ paginator.previous_page_path | prepend: site.baseurl }}"
         class="page-item"
         >&laquo;</a
       >
       {% else %}
-      <span class="page-item">&laquo;</span>
+      <span class="page-item disabled">&laquo;</span>
       {% endif %} {% for page in (1..paginator.total_pages) %} {% if page ==
       paginator.page %}
       <span class="page-item active">{{ page }}</span>
       {% else %}
       <a
-        href="{{ site.paginate_path | prepend: site.baseurl | replace: '//' , '/' | replace: ':num', page }}"
+        href="{{ site.paginate_path | prepend: site.baseurl | replace: ':num', page }}"
         class="page-item"
         >{{ page }}</a
       >
       {% endif %} {% endfor %} {% if paginator.next_page %}
       <a
-        href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//' , '/' }}"
+        href="{{ paginator.next_page_path | prepend: site.baseurl }}"
         class="page-item"
         >&raquo;</a
       >
       {% else %}
-      <span class="page-item">&raquo;</span>
+      <span class="page-item disabled">&raquo;</span>
       {% endif %}
     </div>
     {% endif %} {% include footer.html %} {% if site.google_analytics %} {%
