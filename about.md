@@ -62,6 +62,42 @@ title: About
 }
 </style>
 
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+.terminal-animation {
+  font-family: 'Courier New', monospace;
+  color: #0f0;
+  background-color: black;
+  padding: 10px;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid #0f0;
+  animation: typing 3s steps(30, end), blink 0.8s infinite;
+}
+
+.animated-text {
+  font-family: 'Courier New', monospace;
+  color: #0f0;
+  background-color: black;
+  padding: 10px;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid #0f0;
+}
+</style>
+
+
+
 <div class="terminal-animation">$ Presenting Piyush Parashar's Portfolio...</div>
 
 # <i class="fas fa-user-circle"></i> Piyush Parashar
@@ -89,16 +125,21 @@ Results-driven software engineer with expertise in Java, C/C++, Python, and DevO
 
 ## <i class="fas fa-laptop-code"></i> Experience
 
-### <i class="fas fa-hdd"></i> Associate Software Engineer - Nagarro (March 2023 – Present)
+### <i class="fas fa-hdd"></i> Journey of My Engineering at Nagarro
 
-<div class="api-auth"></div>
+
+
+<div id="api-auth" class="animated-text">
+<img href="https://raw.githubusercontent.com/piyushS3V3N/piyushS3V3N.github.io/main/assets/authservice.webp"></img>
+</div>
 - Develop Java Spring Boot applications with automated CI/CD workflows.
 - Work on API Gateway and Authorization Services using JVM & GraalVM.
 - Deploy scalable applications with Kubernetes & Docker.
 
-### <i class="fas fa-brain"></i> ML Developer Intern - Trinity Institute of Professional Studies (June 2021 – July 2021)
+### <i class="fas fa-brain"></i> Time i got a chance to build an awsome ml based project
 
-<div class="ml-model"></div>
+<div id="ml-model" class="animated-text"></div>
+
 - Built an intelligent chatbot API using TensorFlow, NLTK, and Flask.
 - Optimized model performance to achieve high accuracy rates.
 
