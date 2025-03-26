@@ -198,9 +198,11 @@ In this blog post, we built a simulation application that integrates several adv
 - **PyQt5 GUI and OpenGL Integration:** We configured an OpenGL widget and embedded it within a PyQt5 application.
 - **Interactive UI Elements:** We added buttons and labels to create an interactive simulation environment.
 
-💡 Next Steps: Future improvements could include:
-🔹 Adding more complex agent behaviors
-🔹 Supporting additional visualization features
-🔹 Integrating AI for decision-making in simulations
+💡 Next Steps:
+
+- Future improvements could include:
+- 🔹 Adding more complex agent behaviors
+- 🔹 Supporting additional visualization features
+- 🔹 Integrating AI for decision-making in simulations
 
 Happy coding!
