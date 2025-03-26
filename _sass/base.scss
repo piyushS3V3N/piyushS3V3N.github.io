@@ -227,3 +227,63 @@ footer {
 #wrapper {
   min-height: calc(100vh - 100px);
 }
+
+
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: cyan;
+  font-size: 20px;
+  font-family: "Orbitron", sans-serif;
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+  z-index: 9999;
+}
+
+
+.btn-sci-fi {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 2px solid cyan;
+  background: transparent;
+  color: cyan;
+  font-size: 18px;
+  font-family: "Orbitron", sans-serif;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.btn-sci-fi:hover {
+  background: cyan;
+  color: black;
+  box-shadow: 0 0 10px cyan, 0 0 40px cyan;
+}
+
+.sci-fi-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 10%, #202020 100%);
+}
+
+.sci-fi-window {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  width: 90%;
+  max-width: 800px;
+  text-align: center;
+}
