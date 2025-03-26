@@ -9,6 +9,8 @@ In this blog post, we will break down the process of writing a Python applicatio
 
 ---
 
+![](https://raw.githubusercontent.com/piyushS3V3N/piyushS3V3N.github.io/main/assets/factory/xyz.webp)
+
 ## Part 1: Importing Libraries & Handling Dependencies
 
 The first step in any Python project is importing the necessary modules. Our application uses a mix of standard libraries and external packages. Notice how we gracefully handle optional dependencies with `try-except` blocks.
@@ -196,6 +198,9 @@ In this blog post, we built a simulation application that integrates several adv
 - **PyQt5 GUI and OpenGL Integration:** We configured an OpenGL widget and embedded it within a PyQt5 application.
 - **Interactive UI Elements:** We added buttons and labels to create an interactive simulation environment.
 
-By breaking down the code into clear, logical parts, you should now have a solid understanding of how to create a similar application from scratch. Whether you’re interested in simulation, GUI development, or OpenGL rendering, these building blocks provide a robust foundation for more complex projects.
+💡 Next Steps: Future improvements could include:
+🔹 Adding more complex agent behaviors
+🔹 Supporting additional visualization features
+🔹 Integrating AI for decision-making in simulations
 
 Happy coding!
