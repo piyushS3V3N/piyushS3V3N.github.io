@@ -1,12 +1,15 @@
+/*
+   original: https://github.com/pages-themes/hacker 
+*/
+
 @import "rouge-base16-dark";
 @import "default_colors";
 
-// Define a color palette inspired by Aldnoah.Zero's dark and intense atmosphere
-$body-background: #1a1a1a; // Dark charcoal
-$body-foreground: #e0e0e0; // Light gray for text
-$header: #ff4500; // Bold orange-red
-$blockquote-color: #ff6347; // Tomato
-$blockquote-border: #ff4500; // Bold orange-red
+$body-background: $cod-grey !default;
+$body-foreground: $gallery !default;
+$header: $conifer !default;
+$blockquote-color: $silver-chalice !default;
+$blockquote-border: $dove-grey !default;
 
 body {
   margin: 0;
@@ -16,19 +19,19 @@ body {
   color: $body-foreground;
   font-size: 16px;
   line-height: 1.5;
-  font-family: "Arial", sans-serif;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
 }
 
 /* General & 'Reset' Stuff */
 
 .container {
-  background: rgba(30, 30, 30, 0.9);
+  background: url("../assets/bg.png");
+  opacity: 0.9;
   width: 90%;
   max-width: 1000px;
   margin: 0 auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
+
 
 section {
   display: block;
@@ -42,22 +45,23 @@ h4,
 h5,
 h6 {
   margin: 0 0 20px;
-  color: $header;
-  font-family: "Verdana", sans-serif;
 }
 
 li {
   line-height: 1.4;
 }
 
-/* Header, <header> */
+/* Header, <header>
+   header   - container
+   h1       - project name
+   h2       - project description
+*/
 
 header {
-  background: rgba(255, 69, 0, 0.3);
-  border-bottom: 2px solid $header;
+  background: rgba(0, 0, 0, 0.1);
+  border-bottom: 1px dashed $conifer; //header;
   padding: 20px;
   margin: 0 0 40px 0;
-  border-radius: 10px 10px 0 0;
 }
 
 .header-links {
@@ -69,30 +73,81 @@ header {
 }
 
 header h1 {
-  font-size: 28px;
+  font-size: 24px;
   line-height: 1.5;
   margin: 0;
   text-align: center;
   font-weight: bold;
-  color: $header;
-  text-shadow: 0 1px 1px rgba(255, 69, 0, 0.5);
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  color: $conifer; //$header;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1),
+    0 0 5px rgba(181, 232, 83, 0.1),
+    0 0 10px rgba(181, 232, 83, 0.1);
   letter-spacing: -1px;
+  -webkit-font-smoothing: antialiased;
 }
 
 header h2 {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 300;
-  color: #ccc;
+  color: #666;
 }
 
-/* Main Content */
+/* Main Content
+*/
 
 #main_content {
   width: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
 section img {
-  max-width: 100%;
+  max-width: 100%
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  color: $header;
+  letter-spacing: -0.03em;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1),
+    0 0 5px rgba(181, 232, 83, 0.1),
+    0 0 10px rgba(181, 232, 83, 0.1);
+}
+
+#main_content h1 {
+  font-size: 30px;
+
+}
+
+#main_content h2 {
+  font-size: 24px;
+}
+
+#main_content h3 {
+  font-size: 18px;
+}
+
+#main_content h4 {
+  font-size: 14px;
+}
+
+#main_content h5 {
+  font-size: 12px;
+  text-transform: uppercase;
+  margin: 0 0 5px 0;
+}
+
+#main_content h6 {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #999;
+  margin: 0 0 5px 0;
 }
 
 dt {
@@ -102,43 +157,43 @@ dt {
 
 ul li {
   list-style-image: url('../assets/bullet.png');
-  margin-left: 20px;
 }
 
 blockquote {
   color: $blockquote-color;
-  padding-left: 15px;
-  border-left: 4px solid $blockquote-border;
-  font-style: italic;
+  padding-left: 10px;
+  border-left: 1px dotted $blockquote-border;
 }
 
 pre {
-  background: rgba(30, 30, 30, 0.9);
-  border: 1px solid rgba(255, 69, 0, 0.5);
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 10px;
   font-size: 16px;
-  color: #e0e0e0;
-  border-radius: 5px;
+  color: #b5e853;
+  border-radius: 2px;
+  text-wrap: normal;
   overflow: auto;
+  overflow-y: hidden;
 }
 
 code.highlighter-rouge {
-  background: rgba(30, 30, 30, 0.9);
-  border: 1px solid rgba(255, 69, 0, 0.5);
-  padding: 2px 4px;
-  color: #ff4500;
-  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0px 3px;
+  margin: 0px -3px;
+  color: #aa759f;
+  border-radius: 2px;
 }
 
 table {
   width: 100%;
   margin: 0 0 20px 0;
-  border-collapse: collapse;
 }
 
 th {
   text-align: left;
-  border-bottom: 2px solid $header;
+  border-bottom: 1px dashed #b5e853;
   padding: 5px 10px;
 }
 
@@ -149,29 +204,32 @@ td {
 hr {
   height: 0;
   border: 0;
-  border-bottom: 2px solid $header;
-  color: $header;
+  border-bottom: 1px dashed #b5e853;
+  color: #b5e853;
 }
 
-/* Buttons */
+/* Buttons
+*/
 
 .btn {
   display: inline-block;
-  background: linear-gradient(to top, #ff4500, #ff6347);
+  background: -webkit-linear-gradient(top, rgba(40, 40, 40, 0.3), rgba(35, 35, 35, 0.3) 50%, rgba(10, 10, 10, 0.3) 50%, rgba(0, 0, 0, 0.3));
   padding: 8px 18px;
-  border-radius: 20px;
-  border: 2px solid #ff4500;
-  color: #e0e0e0;
-  font-family: "Arial", sans-serif;
+  border-radius: 50px;
+  border: 2px solid rgba(0, 0, 0, 0.7);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.7);
+  border-top: 2px solid rgba(0, 0, 0, 1);
+  color: rgba(255, 255, 255, 0.8);
+  font-family: Helvetica, Arial, sans-serif;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 13px;
   text-decoration: none;
-  text-shadow: 0 1px 1px rgba(255, 69, 0, 0.5);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .btn:hover {
-  background: linear-gradient(to top, #ff6347, #ff4500);
+  background: -webkit-linear-gradient(top, rgba(40, 40, 40, 0.6), rgba(35, 35, 35, 0.6) 50%, rgba(10, 10, 10, 0.8) 50%, rgba(0, 0, 0, 0.8));
 }
 
 .btn .icon {
@@ -183,21 +241,24 @@ hr {
 }
 
 .btn-github .icon {
-  opacity: 0.8;
-  background: url("../images/github-icon.png") 0 0 no-repeat;
+  opacity: 0.6;
+  background: url("../images/blacktocat.png") 0 0 no-repeat;
 }
 
-/* Links */
+/* Links
+   a, a:hover, a:visited
+*/
 
 a {
-  color: #ff6347;
-  text-shadow: 0 0 5px rgba(255, 99, 71, 0.5);
+  color: #63c0f5;
+  text-shadow: 0 0 5px rgba(104, 182, 255, 0.5);
 }
 
 a:active,
 a:focus {
   outline: 0;
   border: none;
+  -moz-outline-style: none
 }
 
 /* Clearfix */
@@ -227,64 +288,4 @@ footer {
 
 #wrapper {
   min-height: calc(100vh - 100px);
-}
-
-
-#loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: black;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: cyan;
-  font-size: 20px;
-  font-family: "Orbitron", sans-serif;
-  opacity: 1;
-  transition: opacity 1s ease-in-out;
-  z-index: 9999;
-}
-
-
-.btn-sci-fi {
-  display: inline-block;
-  padding: 10px 20px;
-  border: 2px solid cyan;
-  background: transparent;
-  color: cyan;
-  font-size: 18px;
-  font-family: "Orbitron", sans-serif;
-  text-transform: uppercase;
-  position: relative;
-  overflow: hidden;
-  transition: 0.3s;
-}
-
-.btn-sci-fi:hover {
-  background: cyan;
-  color: black;
-  box-shadow: 0 0 10px cyan, 0 0 40px cyan;
-}
-
-.sci-fi-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0a0a0a 10%, #202020 100%);
-}
-
-.sci-fi-window {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(0, 255, 255, 0.3);
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-  width: 90%;
-  max-width: 800px;
-  text-align: center;
 }

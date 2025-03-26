@@ -2,21 +2,11 @@
 layout: default
 ---
 
-<article class="sci-fi-article">
-  <h2 class="post-title">{{ page.title }}</h2>
+<article>
+  <h2>{{ page.title }}</h2>
   <time datetime="{{ page.date | date_to_xmlschema }}" class="by-line"
     >{{ page.date | date_to_string }}</time
   >
   {{ content }}
 </article>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    gsap.fromTo(
-      ".sci-fi-article",
-      { opacity: 0, x: -50 },
-      { opacity: 1, x: 0, duration: 1.2, ease: "power3.out" },
-    );
-  });
-</script>
 
