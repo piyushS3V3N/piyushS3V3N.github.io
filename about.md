@@ -13,6 +13,20 @@ title: About
   50% { border-color: transparent; }
 }
 
+@keyframes request-flow {
+  0% { content: "🔗 Sending Request..."; }
+  33% { content: "🔐 Authenticating..."; }
+  66% { content: "✅ Access Granted!"; }
+  100% { content: "🔄 Fetching Data..."; }
+}
+
+@keyframes nlp-training {
+  0% { content: "📂 Loading Dataset..."; }
+  33% { content: "📊 Training Model..."; }
+  66% { content: "🤖 Optimizing Weights..."; }
+  100% { content: "🎯 Model Ready!"; }
+}
+
 .terminal-animation {
   font-family: 'Courier New', monospace;
   color: #0f0;
@@ -24,19 +38,37 @@ title: About
   border-right: 2px solid #0f0;
   animation: typing 3s steps(30, end), blink 0.8s infinite;
 }
+
+.api-auth {
+  font-family: 'Courier New', monospace;
+  color: #0f0;
+  background-color: black;
+  padding: 10px;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: request-flow 4s steps(30, end) infinite;
+}
+
+.ml-model {
+  font-family: 'Courier New', monospace;
+  color: #0f0;
+  background-color: black;
+  padding: 10px;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: nlp-training 4s steps(30, end) infinite;
+}
 </style>
+
+<div class="terminal-animation">$ Presenting Piyush Parashar's Portfolio...</div>
 
 # <i class="fas fa-user-circle"></i> Piyush Parashar
 
 **<i class="fas fa-map-marker-alt"></i> Location:** Delhi, India  
 **<i class="fas fa-envelope"></i> Email:** [piyushparashar2k@gmail.com](mailto:piyushparashar2k@gmail.com)  
 **<i class="fab fa-github"></i> GitHub:** [github.com/piyushS3V3N](https://github.com/piyushS3V3N)
-
----
-
-## <i class="fas fa-terminal"></i> Live Console
-
-<div class="terminal-animation">$ Deploying CI/CD pipeline...</div>
 
 ---
 
@@ -59,12 +91,14 @@ Results-driven software engineer with expertise in Java, C/C++, Python, and DevO
 
 ### <i class="fas fa-hdd"></i> Associate Software Engineer - Nagarro (March 2023 – Present)
 
+<div class="api-auth"></div>
 - Develop Java Spring Boot applications with automated CI/CD workflows.
 - Work on API Gateway and Authorization Services using JVM & GraalVM.
 - Deploy scalable applications with Kubernetes & Docker.
 
 ### <i class="fas fa-brain"></i> ML Developer Intern - Trinity Institute of Professional Studies (June 2021 – July 2021)
 
+<div class="ml-model"></div>
 - Built an intelligent chatbot API using TensorFlow, NLTK, and Flask.
 - Optimized model performance to achieve high accuracy rates.
 
