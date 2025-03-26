@@ -201,8 +201,8 @@ In this blog post, we built a simulation application that integrates several adv
 💡 Next Steps:
 
 - Future improvements could include:
-- 🔹 Adding more complex agent behaviors
-- 🔹 Supporting additional visualization features
-- 🔹 Integrating AI for decision-making in simulations
+  -- 🔹 Adding more complex agent behaviors
+  -- 🔹 Supporting additional visualization features
+  -- 🔹 Integrating AI for decision-making in simulations
 
 Happy coding!
