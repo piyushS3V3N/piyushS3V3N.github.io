@@ -1,10 +1,271 @@
 @import "rouge-base16-dark";
 @import "default_colors";
 
+// Define a color palette inspired by Aldnoah.Zero's dark and intense atmosphere
+$body-background: #1a1a1a; // Dark charcoal
+$body-foreground: #e0e0e0; // Light gray for text
+$header: #ff4500; // Bold orange-red
+$blockquote-color: #ff6347; // Tomato
+$blockquote-border: #ff4500; // Bold orange-red
+
 body {
-  background: #0a0f1e;
-  color: #d1d1e9;
+  margin: 0;
+  padding: 0;
+  background: $body-background;
+  color: $body-foreground;
+  font-size: 16px;
+  line-height: 1.5;
+  font-family: "Arial", sans-serif;
+}
+
+/* General & 'Reset' Stuff */
+
+.container {
+  background: rgba(30, 30, 30, 0.9);
+  width: 90%;
+  max-width: 1000px;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+section {
+  display: block;
+  margin: 0 0 20px 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 20px;
+  color: $header;
+  font-family: "Verdana", sans-serif;
+}
+
+li {
+  line-height: 1.4;
+}
+
+/* Header, <header> */
+
+header {
+  background: rgba(255, 69, 0, 0.3);
+  border-bottom: 2px solid $header;
+  padding: 20px;
+  margin: 0 0 40px 0;
+  border-radius: 10px 10px 0 0;
+}
+
+.header-links {
+  text-align: center;
+}
+
+.header-link {
+  display: inline;
+}
+
+header h1 {
+  font-size: 28px;
+  line-height: 1.5;
+  margin: 0;
+  text-align: center;
+  font-weight: bold;
+  color: $header;
+  text-shadow: 0 1px 1px rgba(255, 69, 0, 0.5);
+  letter-spacing: -1px;
+}
+
+header h2 {
+  font-size: 20px;
+  font-weight: 300;
+  color: #ccc;
+}
+
+/* Main Content */
+
+#main_content {
+  width: 100%;
+}
+
+section img {
+  max-width: 100%;
+}
+
+dt {
+  font-style: italic;
+  font-weight: bold;
+}
+
+ul li {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+blockquote {
+  color: $blockquote-color;
+  padding-left: 15px;
+  border-left: 4px solid $blockquote-border;
+  font-style: italic;
+}
+
+pre {
+  background: rgba(30, 30, 30, 0.9);
+  border: 1px solid rgba(255, 69, 0, 0.5);
+  padding: 10px;
+  font-size: 16px;
+  color: #e0e0e0;
+  border-radius: 5px;
+  overflow: auto;
+}
+
+code.highlighter-rouge {
+  background: rgba(30, 30, 30, 0.9);
+  border: 1px solid rgba(255, 69, 0, 0.5);
+  padding: 2px 4px;
+  color: #ff4500;
+  border-radius: 3px;
+}
+
+table {
+  width: 100%;
+  margin: 0 0 20px 0;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  border-bottom: 2px solid $header;
+  padding: 5px 10px;
+}
+
+td {
+  padding: 5px 10px;
+}
+
+hr {
+  height: 0;
+  border: 0;
+  border-bottom: 2px solid $header;
+  color: $header;
+}
+
+/* Buttons */
+
+.btn {
+  display: inline-block;
+  background: linear-gradient(to top, #ff4500, #ff6347);
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 2px solid #ff4500;
+  color: #e0e0e0;
+  font-family: "Arial", sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  text-decoration: none;
+  text-shadow: 0 1px 1px rgba(255, 69, 0, 0.5);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.btn:hover {
+  background: linear-gradient(to top, #ff6347, #ff4500);
+}
+
+.btn .icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin: 1px 8px 0 0;
+  float: left;
+}
+
+.btn-github .icon {
+  opacity: 0.8;
+  background: url("../images/github-icon.png") 0 0 no-repeat;
+}
+
+/* Links */
+
+a {
+  color: #ff6347;
+  text-shadow: 0 0 5px rgba(255, 99, 71, 0.5);
+}
+
+a:active,
+a:focus {
+  outline: 0;
+  border: none;
+}
+
+/* Clearfix */
+
+.cf:before,
+.cf:after {
+  content: "";
+  display: table;
+}
+
+.cf:after {
+  clear: both;
+}
+
+.cf {
+  zoom: 1;
+}
+
+/* Make footer stick to bottom */
+
+.pagination,
+footer {
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+}
+
+#wrapper {
+  min-height: calc(100vh - 100px);
+}
+
+
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: cyan;
+  font-size: 20px;
   font-family: "Orbitron", sans-serif;
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+  z-index: 9999;
+}
+
+
+.btn-sci-fi {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 2px solid cyan;
+  background: transparent;
+  color: cyan;
+  font-size: 18px;
+  font-family: "Orbitron", sans-serif;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.btn-sci-fi:hover {
+  background: cyan;
+  color: black;
+  box-shadow: 0 0 10px cyan, 0 0 40px cyan;
 }
 
 .sci-fi-container {
@@ -12,63 +273,17 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 20px;
+  background: linear-gradient(135deg, #0a0a0a 10%, #202020 100%);
 }
 
 .sci-fi-window {
-  background: rgba(20, 25, 40, 0.95);
-  border: 2px solid rgba(0, 255, 255, 0.7);
-  box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.5);
-  padding: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(0, 255, 255, 0.3);
   border-radius: 10px;
-}
-
-.sci-fi-article {
   padding: 20px;
-  background: rgba(20, 25, 40, 0.9);
-  border: 1px solid rgba(0, 255, 255, 0.5);
-  box-shadow: 0px 0px 8px rgba(0, 255, 255, 0.3);
-  border-radius: 8px;
-}
-
-.post-title {
-  color: #00ffff;
-  text-shadow: 0px 0px 5px rgba(0, 255, 255, 0.8);
-}
-
-.by-line {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  padding: 10px;
-}
-
-.page-item {
-  color: #00ffff;
-  padding: 5px 10px;
-  border: 1px solid #00ffff;
-  text-decoration: none;
-  margin: 2px;
-}
-
-.page-item.active {
-  background: #00ffff;
-  color: #0a0f1e;
-}
-
-#loading-screen {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: #0a0f1e;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #00ffff;
-  font-size: 24px;
-  text-shadow: 0px 0px 10px rgba(0, 255, 255, 0.8);
-  transition: opacity 1s ease-in-out;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  width: 90%;
+  max-width: 800px;
+  text-align: center;
 }
