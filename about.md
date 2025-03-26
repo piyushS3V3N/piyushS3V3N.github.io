@@ -1,9 +1,6 @@
 ---
----
-
 layout: page
 title: About
-
 ---
 
 <style>
