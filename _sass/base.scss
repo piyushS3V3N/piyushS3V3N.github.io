@@ -1,12 +1,12 @@
 @import "rouge-base16-dark";
 @import "default_colors";
 
-// Define a pastel color palette inspired by Gundam and Evangelion
-$body-background: #f8f0e3; // Soft cream
-$body-foreground: #5a5a5a; // Dark gray for text
-$header: #ffb3ba; // Light pink
-$blockquote-color: #ffdfba; // Peach
-$blockquote-border: #ffb3ba; // Light pink
+// Define a color palette inspired by Aldnoah.Zero's dark and intense atmosphere
+$body-background: #1a1a1a; // Dark charcoal
+$body-foreground: #e0e0e0; // Light gray for text
+$header: #ff4500; // Bold orange-red
+$blockquote-color: #ff6347; // Tomato
+$blockquote-border: #ff4500; // Bold orange-red
 
 body {
   margin: 0;
@@ -21,12 +21,12 @@ body {
 /* General & 'Reset' Stuff */
 
 .container {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(30, 30, 30, 0.9);
   width: 90%;
   max-width: 1000px;
   margin: 0 auto;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
 
 section {
@@ -52,7 +52,7 @@ li {
 /* Header, <header> */
 
 header {
-  background: rgba(255, 179, 186, 0.3);
+  background: rgba(255, 69, 0, 0.3);
   border-bottom: 2px solid $header;
   padding: 20px;
   margin: 0 0 40px 0;
@@ -74,14 +74,14 @@ header h1 {
   text-align: center;
   font-weight: bold;
   color: $header;
-  text-shadow: 0 1px 1px rgba(255, 179, 186, 0.5);
+  text-shadow: 0 1px 1px rgba(255, 69, 0, 0.5);
   letter-spacing: -1px;
 }
 
 header h2 {
   font-size: 20px;
   font-weight: 300;
-  color: #666;
+  color: #ccc;
 }
 
 /* Main Content */
@@ -112,20 +112,20 @@ blockquote {
 }
 
 pre {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(30, 30, 30, 0.9);
+  border: 1px solid rgba(255, 69, 0, 0.5);
   padding: 10px;
   font-size: 16px;
-  color: #5a5a5a;
+  color: #e0e0e0;
   border-radius: 5px;
   overflow: auto;
 }
 
 code.highlighter-rouge {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(30, 30, 30, 0.9);
+  border: 1px solid rgba(255, 69, 0, 0.5);
   padding: 2px 4px;
-  color: #d63384;
+  color: #ff4500;
   border-radius: 3px;
 }
 
@@ -156,21 +156,21 @@ hr {
 
 .btn {
   display: inline-block;
-  background: linear-gradient(to top, #ffb3ba, #ffdfba);
+  background: linear-gradient(to top, #ff4500, #ff6347);
   padding: 8px 18px;
   border-radius: 20px;
-  border: 2px solid #ffb3ba;
-  color: #5a5a5a;
+  border: 2px solid #ff4500;
+  color: #e0e0e0;
   font-family: "Arial", sans-serif;
   font-weight: bold;
   font-size: 14px;
   text-decoration: none;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 1px 1px rgba(255, 69, 0, 0.5);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .btn:hover {
-  background: linear-gradient(to top, #ffdfba, #ffb3ba);
+  background: linear-gradient(to top, #ff6347, #ff4500);
 }
 
 .btn .icon {
@@ -189,8 +189,8 @@ hr {
 /* Links */
 
 a {
-  color: #ff677d;
-  text-shadow: 0 0 5px rgba(255, 103, 125, 0.5);
+  color: #ff6347;
+  text-shadow: 0 0 5px rgba(255, 99, 71, 0.5);
 }
 
 a:active,
