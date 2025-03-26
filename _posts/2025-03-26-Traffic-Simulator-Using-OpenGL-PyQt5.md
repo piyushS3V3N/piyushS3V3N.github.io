@@ -1,5 +1,5 @@
 ---
-title: Traffic Simulator using Application with PyQt5
+title: Traffic Simulator with PyQt5
 published: true
 ---
 
