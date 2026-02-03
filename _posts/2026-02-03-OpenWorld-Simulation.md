@@ -26,7 +26,7 @@ The simulation boasts several core features that contribute to its immersive (th
 
 One of the highlights of `metal_test_cpp` is its dynamically generated terrain. Utilizing fractal noise, the project creates a mountainous landscape that feels organic and unique with each run. The terrain is intelligently colored based on height, transitioning from lush green grass at lower altitudes to rocky slopes and snow-capped peaks.
 
-![Screenshot of the procedurally generated terrain, showing different height-based textures like grass, rock, and snow.](https://raw.githubusercontent.com/piyushS3V3N/piyushS3V3N.github.io/refs/heads/main/assets/Metal_test.png)
+![Screenshot of the procedurally generated terrain, showing different height-based textures like grass, rock, and snow.](https://raw.githubusercontent.com/piyushS3V3N/piyushS3V3N.github.io/refs/heads/main/assets/metal-test/Metal_test.png)
 
 ### 2. Basic Lighting Model
 
