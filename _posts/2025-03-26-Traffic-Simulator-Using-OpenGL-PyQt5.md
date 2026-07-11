@@ -9,7 +9,7 @@ In this blog post, we will break down the process of writing a Python applicatio
 
 ---
 
-![](https://raw.githubusercontent.com/piyushS3V3N/piyushS3V3N.github.io/refs/heads/main/assets/xyz.webp)
+![Traffic Simulator Architecture](/assets/traffic-sim-arch.svg)
 
 ## Part 1: Importing Libraries & Handling Dependencies
 

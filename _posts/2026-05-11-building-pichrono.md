@@ -1,40 +1,52 @@
 ---
 layout: post
-title: "Building a Version Control System in C (And Why You Probably Shouldn't)"
+title: "I accidentally deleted my own commits, so I wrote a doomsday protocol"
 date: 2026-05-11 14:30:00 +0530
 categories: [C Programming, Version Control, Systems]
 tags: [c, git, pichrono, systems-programming, vcs]
 ---
 
-I recently started working on **[Pichrono](https://github.com/piyushS3V3N/pichrono)**, a custom Version Control System (VCS) written entirely from scratch in C. The pitch? A high-performance, lightweight VCS that implements the core data structures of Git—content-addressable storage, Merkle trees, Directed Acyclic Graphs (DAGs)—and includes a "doomsday plan" to recover lost work.
+### Building the Core Engine
 
-Sounds pretty cool, right? Well, let me tell you about the reality of building a VCS in C.
+Writing a version control system from scratch in C forces you to confront the absolute lowest levels of data management. The initial goal for Pichrono was to replicate Git's core triad: blobs (file contents), trees (directory structures), and commits (snapshots in time). 
+
+To do this, I had to write a custom SHA-1 hashing module and integrate `zlib` for compression. The pain points emerged almost immediately. C does not have built-in associative arrays or hash maps, meaning I had to build a custom Directed Acyclic Graph (DAG) parser just to traverse the Merkle tree of commits. Every time you run `pichrono commit`, the C engine has to hash the payload, deflate it into binary, write it to `.pichrono/objects`, and then update a pointer in `.pichrono/refs`. Managing memory allocations (`malloc` / `free`) for these nested tree structures was a brutal exercise in avoiding segmentation faults.
+
+### The Incident
+
+There is a distinct kind of panic that sets in when you type `git reset --hard` and immediately realize you just nuked two days of unpushed work. 
+
+Now, imagine experiencing that same panic, but you can't blame Git because *you wrote the version control system yourself*. 
+
+For the past few weeks, I've been deep in the trenches building [Pichrono](https://github.com/piyushS3V3N/pichrono)—a VCS written purely in C. I wanted to understand Merkle trees and content-addressable storage from first principles. Everything went great until I introduced branching. Due to a botched pointer arithmetic operation in my branch-switching logic, I effectively orphaned my entire commit history. 
+
+My files were still technically on disk, compressed via ZLIB and hashed with SHA-1, but the Directed Acyclic Graph (DAG) had completely forgotten how to find them.
+
+### The Doomsday Protocol
+
+So, I stopped working on standard VCS features and spent three days writing a "Doomsday Recovery" module. 
+
+```c
+// Actual excerpt from my descent into madness
+void pichrono_doomsday_scan(const char *objects_dir) {
+    printf("[!] INITIATING DOOMSDAY PROTOCOL\n");
+    // Brute force read every single zlib-compressed object 
+    // on disk to reconstruct the shattered DAG...
+}
+```
+
+It acts as an aggressive object scanner. When triggered, it ignores the broken refs, dynamically allocates a buffer, and uses `inflateInit` from `zlib.h` to decompress every single object file in the `.pichrono/objects` directory. Since Git objects (and Pichrono objects) are formatted as `<type> <size>\0<content>`, I had to write a custom C parser that hunts for that null byte. It reconstructs the parent-child commit hashes in memory and builds a reverse-lookup table to figure out which nodes are completely disconnected from any known branch.
+
+### Visualizing the Rescue
+
+To make sure it was actually working and I wasn't just hallucinating data, I hooked up an embedded Mongoose web server to serve the commit graph as an SVG to `localhost:8080`. 
+
+Here is what the recovery actually looked like in the visualizer once it successfully re-attached the lost commits:
 
 ![Pichrono Commit DAG Visualizer](/assets/pichrono-dag.svg)
-*A look at the commit tree.*
 
-### The Reality of "Content-Addressable Storage"
+Notice the dashed red line and the `doomsday-recovery` branch? That is Pichrono automatically rescuing `m3n4` from the abyss.
 
-In theory, storing files based on their SHA-1 hash is an elegant concept. You hash the file contents, compress it with ZLIB, and write it to disk. Identical files get deduplicated automatically. Magic!
+### The Takeaway
 
-In practice, working with ZLIB in raw C is a fantastic way to corrupt your data if you miscalculate your buffer sizes by even a single byte. Dealing with raw byte streams, hashing them efficiently without loading massive files entirely into memory, and then making sure the inflated/deflated blobs match up is an exercise in extreme patience. You haven't truly lived until a minor pointer arithmetic error corrupts your entire commit tree right as you try to read it back.
-
-### The Embedded Web Server (Because the Terminal Isn't Enough)
-
-Git log is great, but visualizing a massive DAG of commits in the terminal can be hard. So, I decided to embed a C-based web server using Mongoose. The idea was to serve a professional, SVG-rendered commit tree directly to the browser when you run `make serve`.
-
-Writing HTML and SVG dynamically inside C strings using `snprintf` is... an experience. It works, and when it renders that beautiful commit graph in the browser, it feels incredibly rewarding. But the journey to get there involved wrestling with HTTP headers, memory leaks on every refresh, and ensuring the local server doesn't just crash when a request drops mid-stream.
-
-### The "Doomsday Plan"
-
-The standout feature of Pichrono is its doomsday recovery system. If you mess up, lose a branch, or somehow orphan your commits, Pichrono has an aggressive object scanner and a built-in reflog. It scans the raw objects directory, reads the headers, reconstructs the DAG by brute force, and figures out what's missing.
-
-Why did I build this? Because during development, I kept accidentally detaching my own references and losing test data. The "doomsday plan" wasn't just a feature; it was a survival mechanism for developing the VCS itself. When your primary tool for tracking code changes is the very tool you are breaking, you need a backup plan.
-
-### Was it worth it?
-
-Building Pichrono has been arguably one of the most punishing and educational projects I've taken on. You don't realize how many edge cases Git gracefully handles until you try to recreate it. File permissions, symlinks, cross-platform line endings, race conditions on disk writes—it's a massive undertaking.
-
-Would I recommend you drop Git and use Pichrono for your production codebase? Absolutely not. 
-
-But if you want to truly understand how Git works under the hood, I highly recommend trying to build a terrible, broken version of it yourself in C. You'll gain a permanent, profound respect for Linus Torvalds.
+Writing your own tools from scratch is an incredible way to learn. It is also an incredible way to shoot yourself in the foot. But hey, at least I know exactly how the bandage works now.

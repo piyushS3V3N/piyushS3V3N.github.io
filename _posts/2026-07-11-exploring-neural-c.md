@@ -20,6 +20,25 @@ Honestly, the best part is the speed. By writing compute shaders in Metal and di
 
 The Raylib visualizer is also pretty neat. You can watch the weights update and the loss graph drop in real-time. I even added a feature where you can press '1' or '0' while it's running to correct bad predictions on the fly and force it to re-evaluate. 
 
+### Wrestling with Metal Matrix Math
+
+The biggest hurdle wasn't the neural network math itself—it was getting the CPU and GPU to talk without bottlenecking. Writing the matrix multiplication kernel in `.metal` was straightforward:
+
+```metal
+kernel void matrix_mul(
+    device const float* A [[buffer(0)]],
+    device const float* B [[buffer(1)]],
+    device float* C [[buffer(2)]],
+    uint2 gid [[thread_position_in_grid]]
+) {
+    // Standard dot product implementation...
+}
+```
+
+The real nightmare was the Objective-C++ bridging layer. Because my core engine is pure C, I had to write a wrapper that took raw `float*` arrays, allocated `MTLBuffer` objects configured with `MTLResourceStorageModeShared`, copied the memory over, and then calculated the optimal `MTLSize` threadgroups based on the dimensions of the network layers. In my early attempts, miscalculating the grid size meant the GPU either threw a silent fault or hung my entire Mac for 5 seconds before the window server killed my process. 
+
+Once I finally got the synchronization right—using dispatch semaphores to ensure the CPU didn't read the loss gradient before the GPU finished computing it—the performance jump was massive. A forward pass that took 12ms on the CPU dropped to 0.4ms.
+
 ### What sucks (and what I need to fix)
 
 Since this is a custom engine built from the ground up, there are a lot of rough edges I'm currently wrestling with:
