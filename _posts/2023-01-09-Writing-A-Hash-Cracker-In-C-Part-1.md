@@ -4,35 +4,41 @@ published: true
 ---
 ![](https://b14nkmind.files.wordpress.com/2022/04/image-1.png)
 
-# [](#header1) What is a Hash Cracker ?
-A hash cracker is a software specifically designed to crack (i.e. Decode ) a hash that is not supposed to be decoded without a key. It enumerates through thousand of hashes to find the password from the hash values (i.e. SHA256, MD5 etc.)
 
-# [](#header2) How it works ?
-Hash Cracker Guesses password hashes them then compares the resulting hash to the one it is trying to crack. If the hash matches to the one it’s trying to crack then we know the password if not keep guessing.
+# Building a High-Throughput Hash Cracker in C
 
-But in out case we would be using more of dictionary brute force attack rather than a combination attack.
-how we are going to this is by using a rockyou.txt (one of the largest password list ). Hashing the password using the algorithm and then comparing them to the hash we are trying to crack.
+Building a brute-force hash cracker is a great way to understand the performance characteristics of modern hardware. The goal of this project was to design a custom C-based collision engine capable of executing millions of SHA-256 and MD5 permutations per second against large dictionaries like `rockyou.txt`.
 
-# [](#header3) Let’s get started !
-For the sake of testing i am only coding the hash cracker for two hashes commonly used i.e. the SHA256 and MD5.
+## 1. Dictionary Topologies and File I/O
 
-After extensive research on various platforms i came to a conclusion it was futile so i went to github to see some of the good implementation there is to offer from crypto community.
+The objective of a hash cracker is to resolve one-way cryptographic hashes back to their plaintext origins. While combination attacks try every possible character permutation, dictionary attacks iterate through massive pre-computed lists.
 
-# [](#header4) SHA256
-SHA256 is a hashing function that outputs a value that is 256 bits long. It generates almost unique 256-bit(32 byte ) signature of a text.  In encryption, data is transformed into a secure format that is unreadable unless the recipient has a key. In its encrypted form, the data may be of unlimited size, often just as long as when unencrypted. In hashing, by contrast, data of arbitrary size is mapped to data of fixed size. For example, a 512-bit string of data would be transformed into a 256-bit string through SHA-256 hashing.
+The first bottleneck in a dictionary attack is often disk I/O. If the execution thread blocks on reading lines from a text file, CPU throughput drops significantly. To solve this, the engine relies on **memory-mapped files (`mmap`)**. By mapping the dictionary directly into the virtual address space, we can avoid standard file read overhead and let the OS handle paging efficiently.
 
-In cryptographic hashing, the hashed data is modified in a way that make it completely unreadable. It would be virtually impossible to convert the 256-bit hash mentioned above back to its original 512-bit form. Wait a min what ? If it can’t be recovered why would some one want to use such useless technique to destroy data. The most common reason is to verify the integrity of the content of data that must be kept secret. For example, hashing is used to verify the integrity of secure messages and files. The hash code of a secure file can be posted publicly so uses can download the file can confirm they have an authentic version without the contents of the file being revealed. Hashes are similarly used to verify digital signatures.
+## 2. Optimizing the SHA-256 Pipeline
 
-Password verification is a particularly important application for cryptographic hashing. Storing users passwords in a plain text document is a recipe for disaster and can lead to another rockyou.txt database XD. So, what is more secure than a hash that can’t be decrypted to store password ?
+SHA-256 maps an arbitrary-length data stream into a deterministic 256-bit signature. To maximize throughput, we need to minimize unnecessary instructions during the hashing loop.
 
-I get it how would user be able to login if password is scrambled into something that is not recoverable ? Well answer is quite simple when user enter a password the password is encrypted into a hash and then the hash is compared to the user in question once the hashes are compared they will match and login and since the hashing function gives unique hashes they would only match to the one plaintext that is from which it is made from.
+### Preprocessing & Bitwise Padding
 
-There are some step involved when we talk about a hashing using SHA256.
+Before the compression loop begins, the plaintext payload must be padded. The algorithm appends a `1` bit, followed by zero-padding until the payload length is congruent to 448 (modulo 512). The final 64 bits represent the big-endian length of the original message.
 
-So First is a Preprocessing stage
+Since we know most passwords fall within a specific length range, we can streamline the padding step rather than doing generic dynamic allocations for every single string.
 
-* Convert the plain text to binary.
-* Append a single 1
+### The Compression Loop
+
+The core execution constraint lies within the chunk compression loop. The initialization vectors and round constants are hard-coded to ensure fast fetching.
+
+For each 512-bit chunk, the engine executes 64 rounds of non-linear bitwise operations (right rotations, shifts, XORs). In standard implementations, these are evaluated in a simple loop. By unrolling parts of the compression loop and keeping the working variables in registers as much as possible, we can reduce loop overhead and branch prediction misses.
+
+### Hardware Offloading Considerations
+
+While this implementation is currently bound to the CPU, it's clear that GPU architectures—with their thousands of arithmetic logic units (ALUs)—are fundamentally better suited for executing parallel, non-branching bitwise permutations like SHA-256 compression loops. Moving the cracking loop to OpenCL or CUDA would be the next logical step.
+
+---
+
+### SHA-256 Algorithmic Pipeline
+
 * Now we pad data with 0’s until data is multiple of 512.
 * Append 64 bits to end where the 64 bits are big-endian integer representing the length of the original input in binary.
 

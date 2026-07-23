@@ -1,44 +1,42 @@
 ---
 layout: post
-title: "PiQME: Preparing for the Post-Quantum Apocalypse"
+title: "PiQME: Preparing for a Post-Quantum Future"
 date: 2026-05-02 10:00:00 +0530
 categories: [Cryptography, Security, C Programming]
 tags: [post-quantum, csidh, chacha20, piqme, crypto]
 ---
 
-We all know it's coming. Quantum computers are slowly but surely scaling up, and when they reach a certain threshold of stable qubits, traditional public-key cryptography (like RSA and ECC) will be broken by Shor's algorithm. 
+As quantum computing architectures continue to mature, the cryptographic community is preparing for the day when traditional public-key infrastructures (like RSA and ECC) become vulnerable. To explore how we can stay ahead of this curve, I developed **[PiQME](https://github.com/piyushS3V3N/piqme)**, a high-performance post-quantum cryptographic tool written in C.
 
-To get ahead of the curve, I've been developing **[PiQME](https://github.com/piyushS3V3N/piqme)**, a high-performance, cross-platform post-quantum cryptographic tool. 
+### 1. The Cryptographic Pipeline
 
-### How PiQME Works
-
-The core philosophy behind PiQME is to combine cutting-edge post-quantum key exchange with brutally fast symmetric encryption. 
-
-Here is a high-level architecture diagram of the flow:
+The primary goal of PiQME was to combine quantum-resistant key exchange with fast symmetric encryption, minimizing overhead while maximizing throughput. 
 
 ![PiQME Architecture Diagram](/assets/piqme-arch.svg)
-*PiQME's hybrid cryptographic pipeline.*
+*PiQME's hybrid cryptographic execution pipeline.*
 
-1. **CSIDH (Commutative Supersingular Isogeny Diffie-Hellman):** For the key exchange, I opted for CSIDH. Unlike some other post-quantum algorithms that have massive key sizes (looking at you, lattice-based crypto), CSIDH has incredibly small keys. It functions similarly to traditional Diffie-Hellman, making it an excellent drop-in replacement for quantum-resistant forward secrecy.
-2. **ChaCha20:** Once the shared secret is established via CSIDH, the actual payload encryption is handed off to ChaCha20. I implemented a massively parallel version of ChaCha20 to ensure that large files can be encrypted and decrypted with extremely high throughput across multiple CPU cores.
+1. **CSIDH (Commutative Supersingular Isogeny Diffie-Hellman):** For the key exchange, I opted for CSIDH. Unlike lattice-based alternatives that require massive key sizes, CSIDH yields highly compact keys. It functions similarly to traditional Diffie-Hellman, making it a great drop-in replacement for achieving forward secrecy without bloating network handshakes.
+2. **ChaCha20 Stream Cipher:** Once the shared secret is established, the actual payload encryption is handed off to ChaCha20. While AES-256 remains computationally secure against quantum threats, ChaCha20 is inherently parallelizable and often faster in software on devices without dedicated AES hardware instructions.
 
-### Why not just use AES?
+### 2. GPU Hardware Acceleration via Apple Metal
 
-While AES-256 is generally considered quantum-safe (Grover's algorithm only halves the effective key size to 128 bits, which is still secure), ChaCha20 is inherently faster in software on devices without dedicated AES hardware instructions. By heavily parallelizing the ChaCha20 stream cipher, PiQME can achieve blistering speeds across a wide variety of platforms.
+To push the throughput limits of ChaCha20, I moved away from standard CPU SIMD pathways and integrated directly with Apple's Metal API. 
 
-### Enter Apple's Metal API: GPU Acceleration
+Because ChaCha20 relies on a deterministic counter matrix, it is an embarrassingly parallel workload. By writing custom Metal compute shaders, we can offload keystream generation directly to the Mac's GPU. The host CPU divides the payload into large grids and dispatches thousands of simultaneous threads. We also implemented a custom contiguous memory pool to stream data to the GPU without bottlenecking the system bus. This allows PiQME to process large files significantly faster than traditional CPU-bound encryptors.
 
-What really sets PiQME apart from standard implementations is our approach to hardware acceleration. Traditional ChaCha20 implementations rely on CPU SIMD instructions (like AVX2 or NEON). We took a different path entirely by deeply integrating with Apple's **Metal API**.
+### 3. Mitigating Side-Channel Attacks
 
-Because ChaCha20 is a stream cipher (it generates a keystream block based on a counter and XORs it with the plaintext), it is *embarrassingly parallel*. We wrote custom Metal compute shaders that offload the keystream generation directly to the Mac's GPU. 
+Implementing CSIDH in pure C meant building a custom multi-precision arithmetic (bignum) library from scratch to handle operations on massive prime numbers. The biggest challenge here was guaranteeing **constant-time execution** to prevent side-channel timing attacks.
 
-Instead of processing a file sequentially on a few CPU threads, PiQME divides the payload into massive grids and dispatches thousands of GPU threads to generate the keystream matrix simultaneously. This custom compute pipeline allows PiQME to chew through multi-gigabyte files at speeds that leave traditional CPU-bound encryptors in the dust. We also added specialized memory pooling to seamlessly stream data to the GPU without bottlenecking the system bus.
-### Implementing CSIDH in Pure C
+Traditional `if/else` branching introduces slight execution delays depending on whether a bit of the secret key is 0 or 1, which an attacker can measure. To fix this, I had to eliminate all control-flow branching from the core math loops. Instead, conditional logic was replaced with bitwise masking:
 
-Building PiQME was essentially a crash course in advanced number theory and extreme low-level C programming. I didn't want to rely on heavy external libraries like OpenSSL, so the entire cryptographic core is written from scratch. Translating the CSIDH whitepapers into code was just the first step. The real nightmare was ensuring the implementation was actually secure against side-channel attacks. 
+```c
+// Constant-time conditional selection
+value = (mask & A) | (~mask & B);
+```
 
-When computing isogenies of elliptic curves, you are dealing with massive prime numbers. I had to write a custom multi-precision arithmetic library (bignum) in pure C just to handle the mathematical operations. The trickiest part was guaranteeing **constant-time execution**. If an `if/else` branch takes slightly longer based on a bit of the secret key, an attacker can measure the CPU cycles and steal the key. 
+Ensuring that the code takes the exact same number of CPU cycles regardless of the input data is extremely difficult, and debugging constant-time Montgomery multiplication loops is a uniquely painful experience.
 
-To fix this, I had to completely eliminate branching from the core math loops. Instead of using `if (bit == 1)`, I had to rely on bitwise masking and arithmetic logic (`value = (mask & A) | (~mask & B)`) to ensure every operation took the exact same number of CPU cycles, regardless of the input data. Debugging segfaults in constant-time Montgomery multiplication loops is something I wouldn't wish on my worst enemy.
+### Looking Ahead
 
-If you want to poke around the source code or test out the encryption yourself, check out the repository on GitHub. Just remember: it's still experimental, so don't use it to secure your life savings quite yet!
+Building PiQME was a deep dive into advanced cryptography and systems-level C programming. It demonstrates that integrating post-quantum algorithms efficiently requires a lot of low-level optimization. If you want to poke around the source code, check out the repository on GitHub—just remember it's still experimental!
